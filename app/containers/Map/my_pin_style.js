@@ -8,7 +8,7 @@ const pinStyle = {
 	left: -WIDTH/2,
 	top: -HEIGHT/2,
 
-	border: '5px solid #0000ff',
+	border: '5px solid #00ff08',
 	borderRadius: HEIGHT, 
 	backgroundColor: 'white', 
 	textAlign: 'center',

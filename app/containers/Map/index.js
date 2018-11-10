@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
+
 import PropTypes from 'prop-types';
 import GoogleMapReact from 'google-map-react';
 import Pin from './pin.js';
+import MyPin from './mypin.js';
 import { filter, map, forEach, get, keyBy, cloneDeep, merge } from 'lodash';
 import firebase from 'firebase';
 
 
-const myUserID = 'Matt'
+const myUserID = 'Jake'
+const currLoc = {
+	lat: 44.0495,
+	lng: -123.0947
+}
 
 const config = {
 	apiKey: 'AIzaSyBVRdXtGC0GvaGzahggIv17wMtZQpoaF1I',
@@ -19,51 +25,30 @@ const config = {
 firebase.initializeApp(config);
 firebase.auth().signInAnonymously();
 
-
-const handleSubmit = (user) => {
-	const itemsRef = firebase.database().ref('users');
-	itemsRef.child(myUserID).set(user);
-}
-
-
-const _onClick = ({x, y, lat, lng, event, state}) => {
-	myPins.pointA.lat = lat
-	myPins.pointA.lng = lng
-	console.log('clicked');
-}
-
-
 class SimpleMap extends Component {
 	constructor() {
 		super();
 
 		this.state = {
-			myPins:{
-				pointA:{
-					lat: 44.1,
-					lng: -123.05
-				},
-				pointB:{
-					lat: 44.3,
-					lng: -123.2
-				}
+			users: {},
+			dest: {
+				lat: null,
+				lng: null
 			},
-			users: {}
-				
-			
+			acceptableDist: 1000
 		}
-
 	}
-	
-
-
-	_onClick = ({x, y, lat, lng, event}) =>{
-		console.log(this.state.myPins.pointA.lat);
-		this.state.myPins.pointA.lat = lat
-		this.state.myPins.pointA.lng = lng
-		console.log('clicked');
-		console.log(this.state.myPins.pointA.lat);
-		handleSubmit(this.state.myPins)
+	_onClick = ({x, y, lat, lng, event}, ) =>{
+		let pointA = currLoc
+		let pointB = {lat, lng}
+		this.state.dest.lat = pointB.lat
+		this.state.dest.lng = pointB.lng
+		let user = {
+			pointA, 
+			pointB
+		}	
+		const itemsRef = firebase.database().ref('users');
+		itemsRef.child(myUserID).set(user);
 	}
 
 	static propTypes = {
@@ -81,47 +66,42 @@ class SimpleMap extends Component {
 		const itemsRef = firebase.database().ref('users');
 		itemsRef.on('value', (snapshot) => {
 			let items = snapshot.val()
-			let newState = []
-			for (let item in item) {
-				newState.push({
-					userID: item;
-					pointA: items[item].pointA
-					pointB: items[item].pointB
-			})
-			}
-			this.setState({
-				items: newState
+			forEach(items, (item, key) => {
+				item.name = key
+				this.setState(merge(cloneDeep(this.state), {
+					users: {
+						[`${key}`]: item 
+					}
+				}))
 			})
 		})
 	}
 	
 	render() {
-		
-		let allUsers = {}
-		const itemsRef = firebase.database().ref('users');
-		itemsRef.on('value', (snapshot) => {
-			let allUsers = snapshot.val();
-			})
-		console.log('users', allUsers)
-		const a = this.state.color
-		let renderedPts = []
-		const pins = map(users, (user) => {console.log(user)})
-		console.log(pins)
-		forEach(users, (user, index) => {
+		let renderedPts = []	
+		forEach(this.state.users, (user, index) => {
+		console.log(user.name, myUserID);
+		if (user.name == myUserID) { 
 		renderedPts.push(
-		<Pin lat={user.pointA.lat} lng={user.pointA.lng} text={'A'} key={`${index}a`}/*RAIN Eugene*/ />)
-		
-		
+		<MyPin lat={user.pointA.lat} lng={user.pointA.lng} text={'A'} key={`${index}a`} />	
+		)
+		} else {
 		renderedPts.push(
-		<Pin lat={user.pointB.lat} lng={user.pointB.lng} text={'B'} key={`${index}b`}/*RAIN Eugene*/ />)
+		<Pin lat={user.pointA.lat} lng={user.pointA.lng} text={'A'} key={`${index}a`}/*RAIN Eugene*/ />	
+		)}
+
+		if (user.name == myUserID) {
+		renderedPts.push(
+		<MyPin lat={user.pointB.lat} lng={user.pointB.lng} text={'B'} key={`${index}b`} />
+		)
+		} else {
+		renderedPts.push(
+		<Pin lat={user.pointB.lat} lng={user.pointB.lng} text={'B'} key={`${index}b`}/*RAIN Eugene*/ />	
+		)}
 		})
+
 		return (
 	<div style ={{ height: '100vh', width: '100%' }}>
-		<span style = {{color: a }} onClick = {
-			() => console.log(this.state)
-		}>
-		test
-		</span>	
 		<GoogleMapReact
 		onClick={this._onClick}
 		bootstrapURLKeys={{ key: 'AIzaSyDXaPRNBYNd0vVUguLrT-cWPM7I2tnyvMY' }}
@@ -130,15 +110,12 @@ class SimpleMap extends Component {
 		geometryLibrary={true}
 		onGoogleApiLoaded={
 			(google) => {
-			}
+		}	
 		}
+
 		>
 
-		{
-			map(users, (user) => (
-				<Pin lat={user.pointA.lat} lng={user.pointA.lng} text={'A'} />
-			))
-		}
+		{renderedPts}
 
 		</GoogleMapReact>
 		</div>
