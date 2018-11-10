@@ -39,8 +39,7 @@ Our team is comprised of comedians and educators that joined forces to create mo
 the first program in 2015, we have worked to improve the content to enhance audience engagement. Three years and fifteen thousand 
 students later, Sex.E is ready to bring Cal Poly's original gender based violence education to your university or educational institution.
 </p>
-        <img src = {TeamPic} />
-       
+      <img src = {TeamPic} width = "700" height = "400" align = "middle"/> 
       </div>
     );
   }
