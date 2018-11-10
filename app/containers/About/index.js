@@ -11,9 +11,9 @@ import H1 from 'components/H1';
 import messages from './messages';
 import List from './List';
 import ListItem from './ListItem';
-import ListItemTitle from './ListItemTitle';
+import TeamPic from './Image.jpg';
 
-export default class FeaturePage extends React.Component {
+export default class AboutUsPage extends React.Component {
   // Since state and props are static,
   // there's no need to re-render this component
   shouldComponentUpdate() {
@@ -24,61 +24,23 @@ export default class FeaturePage extends React.Component {
     return (
       <div>
         <Helmet>
-          <title>Feature Page</title>
+          <title>About Us</title>
           <meta
             name="description"
-            content="Feature page of React.js Boilerplate application"
+            content="AboutUs page of React.js Boilerplate application"
           />
         </Helmet>
         <H1>
-          <FormattedMessage {...messages.header} />
+          About Us
         </H1>
-        <List>
-          <ListItem>
-            <ListItemTitle>
-              <FormattedMessage {...messages.scaffoldingHeader} />
-            </ListItemTitle>
-            <p>
-              <FormattedMessage {...messages.scaffoldingMessage} />
-            </p>
-          </ListItem>
+        <p> Sex.E provides sexual health and gender-based violence education through live sketch comedy shows and online content. 
 
-          <ListItem>
-            <ListItemTitle>
-              <FormattedMessage {...messages.feedbackHeader} />
-            </ListItemTitle>
-            <p>
-              <FormattedMessage {...messages.feedbackMessage} />
-            </p>
-          </ListItem>
-
-          <ListItem>
-            <ListItemTitle>
-              <FormattedMessage {...messages.routingHeader} />
-            </ListItemTitle>
-            <p>
-              <FormattedMessage {...messages.routingMessage} />
-            </p>
-          </ListItem>
-
-          <ListItem>
-            <ListItemTitle>
-              <FormattedMessage {...messages.networkHeader} />
-            </ListItemTitle>
-            <p>
-              <FormattedMessage {...messages.networkMessage} />
-            </p>
-          </ListItem>
-
-          <ListItem>
-            <ListItemTitle>
-              <FormattedMessage {...messages.intlHeader} />
-            </ListItemTitle>
-            <p>
-              <FormattedMessage {...messages.intlMessage} />
-            </p>
-          </ListItem>
-        </List>
+Our team is comprised of comedians and educators that joined forces to create more engaging content. After the development of 
+the first program in 2015, we have worked to improve the content to enhance audience engagement. Three years and fifteen thousand 
+students later, Sex.E is ready to bring Cal Poly's original gender based violence education to your university or educational institution.
+</p>
+        <img src = {TeamPic} />
+       
       </div>
     );
   }
