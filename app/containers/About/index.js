@@ -11,7 +11,7 @@ import H1 from 'components/H1';
 import messages from './messages';
 import List from './List';
 import ListItem from './ListItem';
-import TeamPic from './Image.jpg';
+import TeamPic from './image.jpg';
 
 export default class AboutUsPage extends React.Component {
   // Since state and props are static,
