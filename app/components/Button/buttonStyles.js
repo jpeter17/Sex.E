@@ -11,9 +11,9 @@ const buttonStyles = css`
   user-select: none;
   cursor: pointer;
   outline: 0;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Tahoma';
   font-weight: bold;
-  font-size: 16px;
+  font-size: 72px;
   border: 2px solid #41addd;
   color: #41addd;
 

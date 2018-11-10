@@ -13,6 +13,13 @@ import A from './A';
 import StyledButton from './StyledButton';
 import Wrapper from './Wrapper';
 
+const args = {
+  number: '9093900003', // String value with the number to call
+  prompt: false // Optional boolean property. Determines if the user should be prompt prior to the call 
+}
+ 
+call(args).catch(console.error)
+
 function Button(props) {
   // Render an anchor tag
   let button = (
